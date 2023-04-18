@@ -2,34 +2,39 @@ const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const net = require('net');
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
+var round = 0;
+var game = {roundArray: [{P1: null, P2: null}, {P1:null, P2:null}, {P1:null, P2:null}]};
+var showMove;
+var showWinner;
+var rematchReset;
+
+
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
 const createWindow = () => {
-  // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    resizable: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
   });
 
+  showMove = function (round, player, move){mainWindow.webContents.send('show-move', round, player, move);};
+  showWinner = function (round, winner){mainWindow.webContents.send('show-winner', round, winner);};
+
+
   mainWindow.openDevTools();
-  // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 };
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
+
 app.on('ready', createWindow);
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
@@ -37,19 +42,37 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
+
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+function resetGame (resetSocket) {
+  if (resetSocket)
+  {
+    playersSockets.P1.destroy();
+    playersSockets.P2.destroy();
+    playersSockets = {P1: null, P2: null};
+    logToTextArea('Both players have been disconnected')
+  }
+  rematchReset(resetSocket);
+  playerCount = 0;
+  round = 0;
+  game = {roundArray: [{P1:null, P2:null}, {P1:null, P2:null}, {P1:null, P2:null}]}
+  rematch = {P1:null, P2:null};
+}
 
-var server = net.createServer(function(socket) {
-  socket.write('Echo server\r\n');
-  socket.pipe(socket);
+
+var client = new net.Socket();
+client.connect(1337, '127.0.0.1', function() {
+  console.log('Connected');
 });
 
-server.listen(5555, '127.0.0.1');
+client.on('data', function(data) {
+  console.log('Received: ' + data);
+});
+
+client.on('close', function() {
+  console.log('Connection closed');
+});

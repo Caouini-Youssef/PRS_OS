@@ -520,28 +520,24 @@ video {
   display: flex;
 }
 
-.h-24 {
-  height: 6rem;
+.h-20 {
+  height: 5rem;
 }
 
-.h-32 {
-  height: 8rem;
+.h-24 {
+  height: 6rem;
 }
 
 .h-full {
   height: 100%;
 }
 
-.w-14 {
-  width: 3.5rem;
+.w-1\/2 {
+  width: 50%;
 }
 
 .w-24 {
   width: 6rem;
-}
-
-.w-32 {
-  width: 8rem;
 }
 
 .w-full {
@@ -576,16 +572,16 @@ video {
   justify-content: space-evenly;
 }
 
-.gap-10 {
-  gap: 2.5rem;
-}
-
-.gap-16 {
-  gap: 4rem;
+.gap-3 {
+  gap: 0.75rem;
 }
 
 .gap-5 {
   gap: 1.25rem;
+}
+
+.gap-7 {
+  gap: 1.75rem;
 }
 
 .rounded {
@@ -601,6 +597,16 @@ video {
   border-color: rgb(23 23 23 / var(--tw-border-opacity));
 }
 
+.bg-amber-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(217 119 6 / var(--tw-bg-opacity));
+}
+
+.bg-emerald-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity));
+}
+
 .bg-neutral-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(245 245 245 / var(--tw-bg-opacity));
@@ -611,16 +617,21 @@ video {
   background-color: rgb(212 212 212 / var(--tw-bg-opacity));
 }
 
-.bg-\[url\(\'img\/paper\.svg\'\)\] {
-  background-image: url('img/paper.svg');
+.bg-red-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity));
 }
 
-.bg-\[url\(\'img\/rock\.svg\'\)\] {
-  background-image: url('img/rock.svg');
+.bg-\[url\(\\\'img\/paper\.svg\\\'\)\] {
+  background-image: url(\'img/paper.svg\');
 }
 
-.bg-\[url\(\'img\/scissors\.svg\'\)\] {
-  background-image: url('img/scissors.svg');
+.bg-\[url\(\\\'img\/rock\.svg\\\'\)\] {
+  background-image: url(\'img/rock.svg\');
+}
+
+.bg-\[url\(\\\'img\/scissors\.svg\\\'\)\] {
+  background-image: url(\'img/scissors.svg\');
 }
 
 .bg-contain {
@@ -643,8 +654,8 @@ video {
   padding: 0.25rem;
 }
 
-.p-7 {
-  padding: 1.75rem;
+.p-3 {
+  padding: 0.75rem;
 }
 
 .px-3 {
@@ -655,6 +666,11 @@ video {
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 
 .text-neutral-700 {
