@@ -1,3 +1,8 @@
+/*
+Author : Caouini Youssef
+StudentID : B01299523
+ */
+
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const net = require('net');
@@ -165,9 +170,14 @@ function resetGame (resetSocket) {
 
 function checkRound () {
   if (round < 0 || round > 2) {
+    let gameWinner1 = gameWinner();
+    if (gameWinner1 === 'Tie')
+      logToTextArea('Tie, nobody won the Game !');
+    else
+      logToTextArea(gameWinner1 + ' won the Game !');
     logToTextArea('Asking for rematch');
-    playersSockets.P1.write('rematch');
-    playersSockets.P2.write('rematch');
+    playersSockets.P1.write(gameWinner1 + '|win');
+    playersSockets.P2.write(gameWinner1 + '|win');
   }
 }
 
@@ -176,6 +186,23 @@ function sendRematch () {
   playersSockets.P1.write('rematch-yes');
   playersSockets.P2.write('rematch-yes');
   rematchReset();
+}
+
+function gameWinner() {
+  let P1 = 0, P2 = 0;
+  game.roundArray.forEach((round) => {
+    let winnerGame = winner(round.P1, round.P2);
+    if (winnerGame === 'P1')
+      P1++;
+    else if (winnerGame === 'P2')
+      P2++;
+  });
+  if (P1 === P2)
+    return 'Tie';
+  else if (P1 > P2)
+    return 'P1';
+  else if (P1 < P2)
+    return 'P2';
 }
 
 
@@ -213,7 +240,8 @@ function P2SocketHandler(data) {
       playersSockets.P2.write('error-move');
       return;
     }
-
+    if (game.roundArray[round].P2 !== null)
+      return;
     game.roundArray[round].P2 = array_received[2];
     showMove(round, 2, array_received[2]);
     logToTextArea('P2 made move : ' + array_received[2] + ' on round : ' + (round+1));
@@ -222,10 +250,10 @@ function P2SocketHandler(data) {
       playersSockets.P2.write(winnerPlayer+'|'+(round+1));
       playersSockets.P1.write(winnerPlayer+'|'+(round+1));
       showWinner(round, winnerPlayer);
-      logToTextArea('P' + winnerPlayer + ' won the round ' + (round+1));
+      logToTextArea('Round : ' + (round+1) + ' Result : ' + winnerPlayer);
       round += 1;
       logToTextArea('Passing to round ' + (round+1));
-      checkRound();
+      setTimeout(checkRound, 500);
     }
     else {
       playersSockets.P2.write('wait');
@@ -272,7 +300,8 @@ function P1SocketHandler(data) {
       playersSockets.P1.write('error-move');
       return;
     }
-
+    if (game.roundArray[round].P1 !== null)
+      return;
     game.roundArray[round].P1 = array_received[2];
     showMove(round, 1, array_received[2]);
     logToTextArea('P1 made move : ' + array_received[2] + ' on round : ' + (round+1));
@@ -281,10 +310,13 @@ function P1SocketHandler(data) {
       playersSockets.P1.write(winnerPlayer+'|'+(round+1));
       playersSockets.P2.write(winnerPlayer+'|'+(round+1));
       showWinner(round, winnerPlayer);
-      logToTextArea('P' + winnerPlayer + ' won the round ' + (round+1));
+      if (winnerPlayer === 'P1' || winnerPlayer === 'P2')
+        logToTextArea(winnerPlayer + ' won the round ' + (round+1));
+      else
+        logToTextArea('Tie on the round :' + (round+1));
       round += 1;
       logToTextArea('Passing to round ' + (round+1));
-      checkRound();
+      setTimeout(checkRound, 500);
     }
     else {
       playersSockets.P1.write('wait');
@@ -318,4 +350,3 @@ function closeAll() {
   closeP2(true);
   resetGame(true);
 }
-

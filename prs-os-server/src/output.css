@@ -677,3 +677,15 @@ video {
   --tw-text-opacity: 1;
   color: rgb(64 64 64 / var(--tw-text-opacity));
 }
+
+.bg-\[url\(\'img\/paper\.svg\'\)\] {
+  background-image: url('img/paper.svg');
+}
+
+.bg-\[url\(\'img\/rock\.svg\'\)\] {
+  background-image: url('img/rock.svg');
+}
+
+.bg-\[url\(\'img\/scissors\.svg\'\)\] {
+  background-image: url('img/scissors.svg');
+}

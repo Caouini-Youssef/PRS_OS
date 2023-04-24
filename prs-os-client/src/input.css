@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bg-\[url\(\'img\/paper\.svg\'\)\] {
+    background-image: url('img/paper.svg');
+}
+
+.bg-\[url\(\'img\/rock\.svg\'\)\] {
+    background-image: url('img/rock.svg');
+}
+
+.bg-\[url\(\'img\/scissors\.svg\'\)\] {
+    background-image: url('img/scissors.svg');
+}
