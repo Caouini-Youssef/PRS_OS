@@ -81,8 +81,7 @@ function resetGame (resetConnect) {
 
 socket = new net.Socket();
 
-socket.on('close', function() {
-});
+socket.on('close', function() {resetGame(true)});
 
 function closeSocket() {
   socket.destroy();
@@ -132,8 +131,6 @@ function finishRound(newRound, winner) {
     if (playerNumber === 2)
       otherPlayerMove = advantageMoveDict[game.roundArray[round].P2];
   }
-  console.log(game.roundArray[round]);
-  console.log(otherPlayerMove);
   if (playerNumber === 1)
   {
     showMove(round, playerNumber, game.roundArray[round].P1);
@@ -151,7 +148,6 @@ function finishRound(newRound, winner) {
 socket.on('data', function(data) {
   data = data.toString().trim();
   let array_received = data.split('|');
-  console.log(array_received);
   if (array_received[0] !== 'rematch-yes' && array_received[0] !== 'wait-rematch' && array_received[0] !== 'rematch-no' && array_received[0] !== 'wait' && array_received[0] !== 'close' && array_received[0] !== 'P1' && array_received[0] !== 'P2' && array_received[0] !== 'Tie')
     return;
   if (array_received[0] === 'rematch-yes')

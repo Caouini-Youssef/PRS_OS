@@ -97,7 +97,7 @@ server.on('connection', function (socket) {
       logToTextArea('Both players are connected, game can begin');
     }
     socket.on('data', function (data) {P1SocketHandler(data)});
-    socket.on('end', function() {closeP1(false)});
+    socket.on('close', function() {closeP1(false)});
   }
   else if (playerCount === 1)
   {
@@ -116,7 +116,7 @@ server.on('connection', function (socket) {
       logToTextArea('Both players are connected, game can begin');
     }
     socket.on('data', function (data) {P2SocketHandler(data)});
-    socket.on('end', function() {closeP2(false)});
+    socket.on('close', function() {closeP2(false)});
   }
 
 });
